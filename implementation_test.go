@@ -4,6 +4,20 @@ import (
 	"testing"
 )
 
+// TestNew_Many generates 100 magic squares and verifies them
+func TestNew_Many(t *testing.T) {
+	for n := 3; n < 100; n++ {
+		x, err := New(n)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if !verify(x) {
+			t.Fatal("sum verification failed for:", n)
+		}
+	}
+}
+
 func TestNew_OddOrder(t *testing.T) {
 	n := 5
 
@@ -26,6 +40,10 @@ func TestNew_OddOrder(t *testing.T) {
 				t.Fatal("expected:", y[i][j], "got:", x[i][j])
 			}
 		}
+	}
+
+	if !verify(x) {
+		t.Fatal("sum verification failed")
 	}
 }
 
@@ -50,6 +68,10 @@ func TestNew_DoublyEven(t *testing.T) {
 				t.Fatal("expected:", y[i][j], "got:", x[i][j])
 			}
 		}
+	}
+
+	if !verify(x) {
+		t.Fatal("sum verification failed")
 	}
 }
 
@@ -77,4 +99,47 @@ func TestNew_SinglyEven(t *testing.T) {
 			}
 		}
 	}
+
+	if !verify(x) {
+		t.Fatal("sum verification failed")
+	}
+}
+
+func verify(x [][]int) bool {
+	n := len(x)
+
+	sum := 0
+	forwardSlashDiagSum := 0
+	backSlashDiagSum := 0
+
+	for i := 0; i < n; i++ {
+		forwardSlashDiagSum += x[n-i-1][i]
+		backSlashDiagSum += x[i][i]
+
+		rowSum := 0
+		colSum := 0
+		for j := 0; j < n; j++ {
+			rowSum += x[i][j]
+			colSum += x[j][i]
+		}
+
+		if sum == 0 {
+			sum = rowSum
+		} else {
+			if rowSum != sum {
+				return false
+			}
+		}
+
+		if colSum != sum {
+			return false
+		}
+	}
+
+	if forwardSlashDiagSum != sum ||
+		backSlashDiagSum != sum {
+		return false
+	}
+
+	return true
 }
