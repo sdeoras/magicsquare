@@ -7,7 +7,7 @@ type MagicSquarer interface {
 }
 
 func NewMagicSquarer() MagicSquarer {
-	return newMagicSquare()
+	return newMagicSquarer()
 }
 
 func New(n int) ([][]int, error) {

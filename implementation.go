@@ -1,12 +1,12 @@
 package magicsquare
 
-func newMagicSquare() *magicSquare {
-	return new(magicSquare)
+func newMagicSquarer() *magicSquarer {
+	return new(magicSquarer)
 }
 
-type magicSquare struct{}
+type magicSquarer struct{}
 
-func (m *magicSquare) MagicSquare(n int) ([][]int, error) {
+func (m *magicSquarer) MagicSquare(n int) ([][]int, error) {
 	if n%2 != 0 {
 		return oddOrderMagicSquare(n), nil
 	}
